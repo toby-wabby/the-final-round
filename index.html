@@ -20,6 +20,7 @@
       transition: background-image 0.5s ease-in-out;
       overflow: hidden;
     }
+
     .overlay {
       background: rgba(0, 0, 0, 0.45);
       padding: 40px;
@@ -28,9 +29,17 @@
       color: white;
       box-shadow: 0 20px 40px rgba(0,0,0,0.4);
     }
+
     h1 { font-size: 2.5rem; margin-bottom: 20px; }
     p { font-size: 1.1rem; margin-bottom: 30px; }
-    .buttons { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+
+    .buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
     button {
       border: none;
       padding: 15px 30px;
@@ -40,17 +49,51 @@
       transition: transform 0.2s ease, background 0.3s ease;
       position: relative;
     }
-    #yesBtn { background: #ff4d6d; color: white; z-index: 2; }
+
+    /* Intro buttons */
+    #goodBtn { background: #4169E1; color: white; }
+    #badBtn { background: #e0e0e0; color: #333; }
+    #goodBtn:hover { background: #B0E0E6; }
+    #badBtn:hover { background: #FF335C; }
+
+    /* Proposal buttons */
+    #yesBtn { background: #4169E1; color: white; z-index: 2; }
     #noBtn { background: #e0e0e0; color: #333; }
-    #yesBtn:hover { background: #ff335c; }
+    #yesBtn:hover { background: #B0E0E6; }
+    #noBtn:hover { background: #FF0000; }
+
     .shake { animation: shake 0.3s; }
-    @keyframes shake { 0% { transform: translateX(0); } 25% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-5px); } 100% { transform: translateX(0); } }
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      50% { transform: translateX(5px); }
+      75% { transform: translateX(-5px); }
+      100% { transform: translateX(0); }
+    }
+
     #message { margin-top: 30px; font-size: 1.4rem; display: none; }
+    #proposal { display: none; }
   </style>
 </head>
+
 <body>
-  <div class="overlay">
-    <h1>Will you be my girlfriend? </h1>
+
+
+  <div class="overlay" id="intro">
+    <h1>Hello, baba </h1>
+    <p>How was your day?</p>
+    <div class="buttons">
+      <button id="goodBtn">It was good</button>
+      <button id="badBtn">It was a bad day</button>
+    </div>
+    <p id="comfort" style="display:none; margin-top:20px;">
+      I’m sorry if today was heavy. I love you.
+    </p>
+  </div>
+
+  
+  <div class="overlay" id="proposal">
+    <h1>Can I be your girlfriend? </h1>
     <p>You are all the colors in one, at full brightness</p>
     <div class="buttons">
       <button id="yesBtn">YES</button>
@@ -60,16 +103,40 @@
   </div>
 
   <script>
+    const intro = document.getElementById('intro');
+    const proposal = document.getElementById('proposal');
+    const goodBtn = document.getElementById('goodBtn');
+    const badBtn = document.getElementById('badBtn');
+    const comfort = document.getElementById('comfort');
+    const body = document.body;
+
+    
+    const goodBg = 'https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExNXpsNGdmdm53Z2EyYnJleTk0ZTV2c2hzdDF2dWVhejQ5aWIxMTdtaiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Suw1EXUwavK6IkLx7j/giphy.gif';
+    const badBg = 'https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExZ3NqODZndnUxNmZ1NXY5MXdjaDdrcDRoY3J3MW9lNTd0c2lrM3ZmYiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/KztT2c4u8mYYUiMKdJ/giphy.gif';
+
+    
+    goodBtn.addEventListener('click', () => {
+      body.style.backgroundImage = `url('${goodBg}')`; 
+      intro.style.display = 'none';
+      proposal.style.display = 'block';
+    });
+
+    
+    badBtn.addEventListener('click', () => {
+      body.style.backgroundImage = `url('${badBg}')`;
+      comfort.style.display = 'block';
+    });
+
+
     const yesBtn = document.getElementById('yesBtn');
     const noBtn = document.getElementById('noBtn');
     const message = document.getElementById('message');
-    const body = document.body;
 
     let yesScale = 1;
 
     const defaultBg = 'https://media.giphy.com/media/26BRzozg4TCBXv6QU/giphy.gif';
     const noBg = 'https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExdzc3c2tzaDZwc2JtODZ1cTFhcHh4ejE1ZmdjbzRhbTgxbzFibHR0eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/8lMSsGOniAPEJfeGla/giphy.gif';
-    const yesBg = 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExN3ZnN2piOTRjY3RnMng4NGYza29tZWJvMTUweDRyNnJzNmd2dDV2MCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/Q8fcdQ8NDmbQgaI64x/giphy.gif';
+    const yesBg = 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExN3ZnN2piOTRjY3RnMng4NGYza29tZWJvMTUweDRyNnJzNmd2dDV2MCZlcD12MV9pbnRlcm5hbF9naWZzX3NlYXJjaCZjdD1n/Q8fcdQ8NDmbQgaI64x/giphy.gif';
 
     function moveNoButton() {
       const x = Math.random() * 200 - 100;
@@ -77,24 +144,17 @@
       noBtn.style.transform = `translate(${x}px, ${y}px)`;
     }
 
-    // NO button hover moves it
     noBtn.addEventListener('mouseenter', moveNoButton);
 
-    // NO button click logic
     noBtn.addEventListener('click', () => {
-      // 1️⃣ Change background immediately
       body.style.backgroundImage = `url('${noBg}')`;
-
-      // 2️⃣ Grow YES button
       yesScale += 0.3;
       yesBtn.style.transform = `scale(${yesScale})`;
 
-      // 3️⃣ Shake NO button and move
       noBtn.classList.add('shake');
       moveNoButton();
       setTimeout(() => noBtn.classList.remove('shake'), 300);
 
-      // 4️⃣ Change NO button text randomly
       const phrases = [
         'BAKIT NO? ',
         'DALI NA KASI',
@@ -105,7 +165,6 @@
       noBtn.textContent = phrases[Math.floor(Math.random() * phrases.length)];
     });
 
-    // YES button click logic
     yesBtn.addEventListener('click', () => {
       body.style.backgroundImage = `url('${yesBg}')`;
       message.style.display = 'block';
@@ -113,5 +172,6 @@
       noBtn.style.display = 'none';
     });
   </script>
+
 </body>
 </html>
