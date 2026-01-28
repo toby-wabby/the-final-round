@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Finally...</title>
 
-  <!-- ✅ EMAILJS -->
+  <!-- EMAILJS -->
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <script>
-    (function(){
-      emailjs.init("8CXG1OKiKkcRGsrRN"); // PUBLIC KEY
+    (function () {
+      emailjs.init("8CXG1OKiKkcRGsrRN");
     })();
   </script>
 
@@ -26,35 +26,40 @@
       background-repeat: repeat;
       background-size: auto;
       background-position: top left;
-      transition: background-image 0.5s ease-in-out;
       overflow: hidden;
     }
 
     .overlay {
-      background: rgba(0,0,0,0.45);
+      background: rgba(0, 0, 0, 0.45);
       padding: 40px;
       border-radius: 20px;
-      color: white;
       text-align: center;
+      color: white;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
       z-index: 2;
     }
 
+    h1 { font-size: 2.5rem; }
+    .buttons { display: flex; gap: 20px; justify-content: center; }
+
     button {
-      padding: 15px 30px;
-      border-radius: 999px;
       border: none;
+      padding: 15px 30px;
       font-size: 1.1rem;
+      border-radius: 999px;
       cursor: pointer;
     }
 
-    #yesBtn { background:#4169E1; color:white; }
-    #noBtn { background:#e0e0e0; }
+    #yesBtn { background: #4169E1; color: white; }
+    #noBtn { background: #e0e0e0; }
+
+    #message { display: none; margin-top: 20px; font-size: 1.4rem; }
 
     .love {
       position: fixed;
+      font-size: 1.2rem;
       font-weight: bold;
       color: #ADD8E6;
-      text-shadow: 0 0 6px rgba(173,216,230,.8);
       animation: floatUp 3s linear forwards;
       pointer-events: none;
     }
@@ -63,100 +68,79 @@
       position: fixed;
       font-size: 1.6rem;
       animation: explode 1.5s ease-out forwards;
+      pointer-events: none;
     }
 
     @keyframes floatUp {
-      to { transform: translateY(-200px); opacity:0; }
+      to { transform: translateY(-200px); opacity: 0; }
     }
 
     @keyframes explode {
-      to { transform: scale(1.5) translateY(-100px); opacity:0; }
+      to { transform: scale(1.5) translateY(-100px); opacity: 0; }
     }
   </style>
 </head>
 
 <body>
 
-  <div class="overlay" id="intro">
-    <h1>Hello, baba</h1>
-    <button id="goodBtn">It was good</button>
-    <button id="badBtn">It was a bad day</button>
-    <p id="comfort" style="display:none;">I love you.</p>
-  </div>
-
-  <div class="overlay" id="proposal" style="display:none;">
-    <h1>Can I be your girlfriend?</h1>
+<div class="overlay" id="proposal">
+  <h1>Can I be your girlfriend?</h1>
+  <div class="buttons">
     <button id="yesBtn">YES</button>
     <button id="noBtn">NO?</button>
-    <div id="message" style="display:none;">I love you, always in all ways, Wynona.</div>
   </div>
+  <div id="message">I love you, always in all ways, Wynona.</div>
+</div>
 
 <script>
-  const body = document.body;
-  const intro = document.getElementById('intro');
-  const proposal = document.getElementById('proposal');
-  const goodBtn = document.getElementById('goodBtn');
-  const badBtn = document.getElementById('badBtn');
-  const comfort = document.getElementById('comfort');
   const yesBtn = document.getElementById('yesBtn');
   const noBtn = document.getElementById('noBtn');
   const message = document.getElementById('message');
-
-  const goodBg = 'https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExNXpsNGdmdm53Z2EyYnJleTk0ZTV2c2hzdDF2dWVhejQ5aWIxMTdtaiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Suw1EXUwavK6IkLx7j/giphy.gif';
-  const badBg = 'https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExZ3NqODZndnUxNmZ1NXY5MXdjaDdrcDRoY3J3MW9lNTd0c2lrM3ZmYiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/KztT2c4u8mYYUiMKdJ/giphy.gif';
-  const noBg = 'https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExdzc3c2tzaDZwc2JtODZ1cTFhcHh4ejE1ZmdjbzRhbTgxbzFibHR0eSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/8lMSsGOniAPEJfeGla/giphy.gif';
-  const yesBg = 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZGxlZWFiamFib3ZoM2JzdmY4cjF4aGxwMjQ0a2RtczQ1dXl2b3V0ayZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/R26ERFVcOuANi3EWfT/giphy.gif';
-
-  function setBg(bg) {
-    body.style.backgroundImage = `url('${bg}')`;
-  }
 
   function sendYesEmail() {
     emailjs.send("service_afrkuy3", "template_4jpzd09", {
       message: "She clicked YES 💙",
       time: new Date().toLocaleString()
-    });
+    })
+    .then(() => console.log("💌 Email sent"))
+    .catch(err => console.error("❌ Email error", err));
   }
 
   function loveConfetti() {
-    for (let i=0;i<30;i++) {
+    for (let i = 0; i < 25; i++) {
       setTimeout(() => {
-        const d=document.createElement('div');
-        d.className='love';
-        d.textContent='I love you';
-        d.style.left=Math.random()*80+10+'vw';
-        d.style.bottom=Math.random()*50+'px';
-        document.body.appendChild(d);
-        setTimeout(()=>d.remove(),3000);
-      }, i*100);
+        const love = document.createElement('div');
+        love.className = 'love';
+        love.textContent = 'I love you';
+        love.style.left = Math.random() * 80 + 'vw';
+        love.style.bottom = '0px';
+        document.body.appendChild(love);
+        setTimeout(() => love.remove(), 3000);
+      }, i * 120);
     }
   }
 
   function angryBurst() {
-    ['😡','😠','🤬'].forEach(e=>{
-      for(let i=0;i<8;i++){
-        const d=document.createElement('div');
-        d.className='angry';
-        d.textContent=e;
-        d.style.left=Math.random()*100+'vw';
-        document.body.appendChild(d);
-        setTimeout(()=>d.remove(),1500);
-      }
+    ['😡','🤬','😠'].forEach(e => {
+      const a = document.createElement('div');
+      a.className = 'angry';
+      a.textContent = e;
+      a.style.left = Math.random() * 100 + 'vw';
+      a.style.bottom = '0';
+      document.body.appendChild(a);
+      setTimeout(() => a.remove(), 1500);
     });
   }
 
-  goodBtn.onclick=()=>{ setBg(goodBg); intro.style.display='none'; proposal.style.display='block'; }
-  badBtn.onclick=()=>{ setBg(badBg); comfort.style.display='block'; }
-
-  noBtn.onclick=()=>{ setBg(noBg); angryBurst(); }
-  yesBtn.onclick=()=>{ 
-    setBg(yesBg);
-    message.style.display='block';
-    yesBtn.style.display='none';
-    noBtn.style.display='none';
+  yesBtn.addEventListener('click', () => {
+    message.style.display = 'block';
+    yesBtn.style.display = 'none';
+    noBtn.style.display = 'none';
     loveConfetti();
-    sendYesEmail(); // 💌 EMAIL SENT
-  };
+    sendYesEmail(); // 💌 EMAIL SENT HERE
+  });
+
+  noBtn.addEventListener('click', angryBurst);
 </script>
 
 </body>
